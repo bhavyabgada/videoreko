@@ -102,6 +102,54 @@
 
   </tbody>
 </table>
+
+
+
+<h4 class="display-6">Video Label Detection Summary</h4>
+<table class="table  table-sm">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Parameter</th>
+      <th scope="col">Value</th>
+    </tr>
+  </thead>
+  <tbody>
+
+      <tr>
+      <th scope="row">Labels Detected</th>
+      <td>{{ output['video_label_detection_job_label_list'] }}</td>
+    </tr>
+
+
+  </tbody>
+</table>
+
+    <h4 class="display-6">Video Person Tracking Summary</h4>
+<table class="table  table-sm">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Parameter</th>
+      <th scope="col">Value</th>
+    </tr>
+  </thead>
+  <tbody>
+
+      <tr>
+      <th scope="row">Job Status</th>
+      <td>{{ output['video_person_tracking_job_response']['JobStatus'] }}</td>
+    </tr>
+  <tr>
+      <th scope="row">Number of Person's Detetected</th>
+      <td>{{ output['no_of_persons'] }}</td>
+    </tr>
+
+
+
+  </tbody>
+</table>
+
+
+
         </div>
       </div>
 
@@ -177,6 +225,52 @@
     <td>{{ label['Label']['Name'] }}</td>
         <td>{{ label['Label']['Confidence'] }}</td>
     <td>Parents: {{ label['Label']['Parents'] }}, Instances: {{ label['Label']['Instances'] }}</td>
+
+    </tr>
+  {% endfor %}
+
+
+  </tbody>
+</table>
+
+
+
+
+        </div>
+      </div>
+          {% endif %}
+
+
+
+
+
+
+
+  {% if output is defined %}
+
+  <div class="p-5 mb-4 bg-light rounded-3">
+      <div class="container-fluid py-5">
+          <h4 class="display-6">Rekognition Results: Person Tracking </h4>
+          <p>Sorry, for the improper formatting of output!</p>
+
+
+          <table class="table  table-sm">
+  <thead class="thead-dark">
+    <tr>
+        <th scope="col">Timestamp</th>
+      <th scope="col">Person Index</th>
+
+              <th scope="col">Other Details</th>
+
+    </tr>
+  </thead>
+  <tbody>
+  {% for person in output['video_person_tracking_job_response']['Persons'] %}
+    <tr>
+     <td>{{ person['Timestamp'] }}</td>
+     <td>{{ person['Person']['Index'] }}</td>
+     <td>{{ person['Person'] }}</td>
+
 
     </tr>
   {% endfor %}

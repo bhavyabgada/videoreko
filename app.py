@@ -28,6 +28,7 @@ rekognition = boto3.client('rekognition',
                            region_name=keys.AWS_S3_REGION_NAME
                            )
 
+
 @app.route('/')
 def home():
     return render_template("index.html")
@@ -85,6 +86,7 @@ def upload():
                 except Exception as error:
                     pass
 
+            # Video Label Detection
             video_label_detection_job_start = rekognition.start_label_detection(
                 Video={
                     'S3Object': {
@@ -92,38 +94,58 @@ def upload():
                         'Name': filename,
                     }
                 },
-                ClientRequestToken=name+ '-rekolabel',
+                ClientRequestToken=name + '-rekolabel',
                 MinConfidence=80,
-                # NotificationChannel={
-                #     'SNSTopicArn': 'string',
-                #     'RoleArn': 'string'
-                # },
-                JobTag=name+ '-rekolabel'
+                JobTag=name + '-rekolabel'
             )
 
             video_label_detection_job_response = rekognition.get_label_detection(
                 JobId=video_label_detection_job_start['JobId'],
-                # MaxResults=123,
-                # NextToken='string',
                 SortBy='NAME'
             )
 
+            # Video Person Tracking
+            video_person_tracking_job_start = rekognition.start_person_tracking(
+                Video={
+                    'S3Object': {
+                        'Bucket': BUCKET_NAME,
+                        'Name': filename,
+                    }
+                },
+                ClientRequestToken=name + '-rekopersontracking',
+                JobTag=name + '-rekopersontracking'
+            )
+
+            status = 'IN_PROGRESS'
+            while status != 'SUCCEEDED':
+                video_person_tracking_job_response = rekognition.get_person_tracking(
+                    JobId=video_person_tracking_job_start['JobId'],
+                    SortBy='INDEX'
+                )
+                status = video_person_tracking_job_response['JobStatus']
+
+            # Preparing variables for template
             video_label_detection_job_label_list = []
             for label in video_label_detection_job_response['Labels']:
                 if label['Label']['Name'] not in video_label_detection_job_label_list:
                     video_label_detection_job_label_list.append(label['Label']['Name'])
 
+            persons_list = []
+            for label in video_person_tracking_job_response['Persons']:
+                if label['Person']['Index'] not in persons_list:
+                    persons_list.append(label['Person']['Index'])
 
-
+            no_of_persons = len(persons_list)
 
             # Preparing Data for index.html
             output = {
                 'msg': msg,
                 'transcription': transcription,
                 'lang_score': float(transcription['results']['language_identification'][0]['score']),
-                'video_label_detection_job_start': video_label_detection_job_start,
                 'video_label_detection_job_response': video_label_detection_job_response,
-                'video_label_detection_job_label_list': video_label_detection_job_label_list
+                'video_label_detection_job_label_list': video_label_detection_job_label_list,
+                'video_person_tracking_job_response': video_person_tracking_job_response,
+                'no_of_persons': no_of_persons,
 
             }
 
