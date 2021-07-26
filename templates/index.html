@@ -69,6 +69,9 @@
 
   <div class="p-5 mb-4 bg-light rounded-3">
       <div class="container-fluid py-5">
+      <div class="alert alert-warning" role="alert">
+  If you find any of the Job Status as "Pending" or "In Progress", please keep reloading the page until it is successful!!
+</div>
           <h4 class="display-6">Transcription Summary</h4>
 
 {% if output['lang_score'] < 0.99 %}
@@ -114,7 +117,10 @@
     </tr>
   </thead>
   <tbody>
-
+<tr>
+      <th scope="row">Job Status</th>
+      <td>{{ output['video_label_detection_job_response']['JobStatus'] }}</td>
+    </tr>
       <tr>
       <th scope="row">Labels Detected</th>
       <td>{{ output['video_label_detection_job_label_list'] }}</td>
