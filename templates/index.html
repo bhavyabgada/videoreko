@@ -105,7 +105,7 @@
 
   </tbody>
 </table>
-
+{% endif %}
 
 
 <h4 class="display-6">Video Label Detection Summary</h4>
@@ -159,7 +159,9 @@
         </div>
       </div>
 
-
+{% if output['lang_score'] < 0.99 %}
+    <p></p>
+    {% else %}
 
           <div class="p-5 mb-4 bg-light rounded-3">
       <div class="container-fluid py-5">
