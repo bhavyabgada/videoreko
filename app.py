@@ -125,7 +125,7 @@ def upload():
                     SortBy='INDEX'
                 )
                 status = video_person_tracking_job_response['JobStatus']
-                if now - while_start >= 25:
+                if now - while_start >= 15:
                     status = 'SUCCEEDED'
 
             # Preparing variables for template
