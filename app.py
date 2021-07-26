@@ -272,7 +272,7 @@ def upload():
 
             }
 
-    return render_template("index.html", output=output)
+    return render_template("index-without-person-tracking.html", output=output)
 
 
 if __name__ == "__main__":
