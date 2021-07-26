@@ -239,13 +239,12 @@ def upload():
                 JobTag=name + '-rekopersontracking'
             )
 
-            status = 'IN_PROGRESS'
-            while status != 'SUCCEEDED':
-                video_person_tracking_job_response = rekognition.get_person_tracking(
-                    JobId=video_person_tracking_job_start['JobId'],
-                    SortBy='INDEX'
-                )
-                status = video_person_tracking_job_response['JobStatus']
+
+            video_person_tracking_job_response = rekognition.get_person_tracking(
+                JobId=video_person_tracking_job_start['JobId'],
+                SortBy='INDEX'
+            )
+
 
             # Preparing variables for template
             video_label_detection_job_label_list = []
