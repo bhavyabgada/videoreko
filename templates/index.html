@@ -117,7 +117,7 @@
 
   </tbody>
 </table>
-{% endif %}
+
 
 
             <h4 class="display-6">Grammar Analysis Summary</h4>
@@ -158,7 +158,7 @@
   </tbody>
 </table>
 
-
+{% endif %}
 {#      <h4 class="display-6">Custom vocabulary filter</h4>#}
 {#<table class="table  table-sm">#}
 {#  <thead class="thead-dark">#}
@@ -329,7 +329,7 @@
 
     {% if output is defined %}
 
-{% if output['detect_dominant_language']['Languages'][0]['Score'] >= 0.98 %}
+{% if output['detect_dominant_language']['Languages'][0]['Score'] < 0.98 %}
     <p></p>
     {% else %}
 
@@ -380,7 +380,7 @@
 
    {% if output is defined %}
 
-{% if output['detect_dominant_language']['Languages'][0]['Score'] >= 0.98 %}
+{% if output['detect_dominant_language']['Languages'][0]['Score'] < 0.98 %}
     <p></p>
     {% else %}
 
@@ -427,7 +427,7 @@
 
    {% if output is defined %}
 
-{% if output['detect_dominant_language']['Languages'][0]['Score'] >= 0.98 %}
+{% if output['detect_dominant_language']['Languages'][0]['Score'] < 0.98 %}
     <p></p>
     {% else %}
 
@@ -477,7 +477,7 @@
    {% if output is defined %}
 
 
-{% if output['detect_dominant_language']['Languages'][0]['Score'] >= 0.98 %}
+{% if output['detect_dominant_language']['Languages'][0]['Score'] < 0.98 %}
     <p></p>
     {% else %}
 
