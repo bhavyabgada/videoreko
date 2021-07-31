@@ -152,21 +152,23 @@ def upload():
                 return 'Vocabulary State = '+ get_vocabulary['VocabularyState'] + '. Please retry with correct vocabulary!'
 
 
+            try:
+                transcribe_response = transcribe.start_transcription_job(
+                    TranscriptionJobName=str(name) + '-transcribe',
+                    MediaFormat='mp4',
+                    Media={
+                        'MediaFileUri': 'https://' + BUCKET_NAME + '.s3.amazonaws.com/' + key
+                    },
+                    Settings={
+                                'VocabularyName': str(name) + '-vocabulary'
+                                    },
+                    OutputBucketName=BUCKET_NAME,
+                    OutputKey=str(name) + '-transcribe',
+                    LanguageCode=get_vocabulary['LanguageCode']
 
-            transcribe_response = transcribe.start_transcription_job(
-                TranscriptionJobName=str(name) + '-transcribe',
-                MediaFormat='mp4',
-                Media={
-                    'MediaFileUri': 'https://' + BUCKET_NAME + '.s3.amazonaws.com/' + key
-                },
-                Settings={
-                            'VocabularyName': str(name) + '-vocabulary'
-                                },
-                OutputBucketName=BUCKET_NAME,
-                OutputKey=str(name) + '-transcribe',
-                LanguageCode=get_vocabulary['LanguageCode']
-
-            )
+                )
+            except:
+                pass
 
 
 
