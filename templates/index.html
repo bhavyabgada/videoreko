@@ -46,8 +46,11 @@
           <h2>Upload video here!!!</h2>
           <div>
       <form action="/upload" method="post" enctype="multipart/form-data">
-      <p class="card-text">Choose a video to upload in mp4 format!!!</p>
-        <input type="file" name="file" value="file">
+          <input type="text" name="phrase" class="mr-4" value="Phrase">
+          <input type="text" name="ipa" class="mr-4" value="IPA">
+          <input type="text" name="displayas" class="mr-4" value="DisplayAs">
+                  <input type="file" name="file" value="file">
+
 
       <input type="submit" name="upload" value="Upload" class="btn btn-success">
       </form>
@@ -97,7 +100,7 @@
     </tr>
       <tr>
       <th scope="row">Language Identification</th>
-      <td>Code: {{ output['transcription']['results']['language_identification'][0]['code'] }}, Score: {{ output['transcription']['results']['language_identification'][0]['score'] }}</td>
+      <td>Code: {{ output['languageCode'] }}</td>
     </tr>
 
   <tr>
@@ -106,12 +109,18 @@
     </tr>
 
 
+
+{#<tr>#}
+{#      <th scope="row">get_vocabulary</th>#}
+{#      <td>{{ output['get_vocabulary'] }}</td>#}
+{#    </tr>#}
+
   </tbody>
 </table>
 {% endif %}
 
 
-<h4 class="display-6">Video Label Detection Summary</h4>
+            <h4 class="display-6">Grammar Analysis Summary</h4>
 <table class="table  table-sm">
   <thead class="thead-dark">
     <tr>
@@ -121,46 +130,105 @@
   </thead>
   <tbody>
 <tr>
-      <th scope="row">Job Status</th>
-      <td>{{ output['video_label_detection_job_response']['JobStatus'] }}</td>
-    </tr>
-      <tr>
-      <th scope="row">Labels Detected</th>
-      <td>{{ output['video_label_detection_job_label_list'] }}</td>
-    </tr>
-
-
-  </tbody>
-</table>
-
-    <h4 class="display-6">Video Person Tracking Summary</h4>
-<table class="table  table-sm">
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">Parameter</th>
-      <th scope="col">Value</th>
-    </tr>
-  </thead>
-  <tbody>
-
-      <tr>
-      <th scope="row">Job Status</th>
-      <td>{{ output['video_person_tracking_job_response']['JobStatus'] }}</td>
+      <th scope="row">Detect Sentiment Result</th>
+      <td>{{ output['detect_sentiment']['Sentiment'] }}</td>
     </tr>
   <tr>
-      <th scope="row">Number of Person's Detetected</th>
-      <td>{{ output['no_of_persons'] }}</td>
+      <th scope="row">Personally Identifiable Information (PII) JSON</th>
+      <td>{{ output['detect_pii_entities']['Entities'] }}</td>
     </tr>
-
-
+  <tr>
+      <th scope="row">Key Phrases Json</th>
+      <td>Described Below In table form</td>
+    </tr>
+  <tr>
+      <th scope="row">Detect Entities</th>
+      <td>Described Below In table form</td>
+    </tr>
+  <tr>
+      <th scope="row">Dominant Language</th>
+      <td>Language Code: {{ output['detect_dominant_language']['Languages'][0]['LanguageCode']}}, Score: {{ output['detect_dominant_language']['Languages'][0]['Score']}}</td>
+    </tr>
+  <tr>
+      <th scope="row">Grammar Analysis Response</th>
+      <td>Described Below In table form</td>
+    </tr>
+  <tr>
 
   </tbody>
 </table>
 
 
+{#      <h4 class="display-6">Custom vocabulary filter</h4>#}
+{#<table class="table  table-sm">#}
+{#  <thead class="thead-dark">#}
+{#    <tr>#}
+{#      <th scope="col">Parameter</th>#}
+{#      <th scope="col">Value</th>#}
+{#    </tr>#}
+{#  </thead>#}
+{#  <tbody>#}
+{#<tr>#}
+{#      <th scope="row">JSON</th>#}
+{#      <td>{{ output['customizable_filter'] }}</td>#}
+{#    </tr>#}
+{#  <th scope="row">Output</th>#}
+{#      <td>{{ output['transcription'] }}</td>#}
+{#    </tr>#}
+{#  </tbody>#}
+{#</table>#}
 
-        </div>
-      </div>
+
+{#<h4 class="display-6">Video Label Detection Summary</h4>#}
+{#<table class="table  table-sm">#}
+{#  <thead class="thead-dark">#}
+{#    <tr>#}
+{#      <th scope="col">Parameter</th>#}
+{#      <th scope="col">Value</th>#}
+{#    </tr>#}
+{#  </thead>#}
+{#  <tbody>#}
+{#<tr>#}
+{#      <th scope="row">Job Status</th>#}
+{#      <td>{{ output['video_label_detection_job_response']['JobStatus'] }}</td>#}
+{#    </tr>#}
+{#      <tr>#}
+{#      <th scope="row">Labels Detected</th>#}
+{#      <td>{{ output['video_label_detection_job_label_list'] }}</td>#}
+{#    </tr>#}
+{##}
+{##}
+{#  </tbody>#}
+{#</table>#}
+{##}
+{#    <h4 class="display-6">Video Person Tracking Summary</h4>#}
+{#<table class="table  table-sm">#}
+{#  <thead class="thead-dark">#}
+{#    <tr>#}
+{#      <th scope="col">Parameter</th>#}
+{#      <th scope="col">Value</th>#}
+{#    </tr>#}
+{#  </thead>#}
+{#  <tbody>#}
+{##}
+{#      <tr>#}
+{#      <th scope="row">Job Status</th>#}
+{#      <td>{{ output['video_person_tracking_job_response']['JobStatus'] }}</td>#}
+{#    </tr>#}
+{#  <tr>#}
+{#      <th scope="row">Number of Person's Detetected</th>#}
+{#      <td>{{ output['no_of_persons'] }}</td>#}
+{#    </tr>#}
+{##}
+{##}
+{##}
+{#  </tbody>#}
+{#</table>#}
+{##}
+{##}
+{##}
+{#        </div>#}
+{#      </div>#}
 
 {% if output['lang_score'] < 0.99 %}
     <p></p>
@@ -209,78 +277,136 @@
       {% endif %}
 
 
-
-
-      {% if output is defined %}
-
-  <div class="p-5 mb-4 bg-light rounded-3">
-      <div class="container-fluid py-5">
-          <h4 class="display-6">Rekognition Results: Labels </h4>
-          <p>List of Labels Detected:  {{ output['video_label_detection_job_label_list'] }}</p>
-
-
-          <table class="table  table-sm">
-  <thead class="thead-dark">
-    <tr>
-        <th scope="col">Timestamp</th>
-      <th scope="col">Label Name</th>
-
-              <th scope="col">Confidence</th>
-              <th scope="col">Other Details</th>
-    </tr>
-  </thead>
-  <tbody>
-  {% for label in output['video_label_detection_job_response']['Labels'] %}
-    <tr>
-      <td>{{ label['Timestamp'] }}</td>
-    <td>{{ label['Label']['Name'] }}</td>
-        <td>{{ label['Label']['Confidence'] }}</td>
-    <td>Parents: {{ label['Label']['Parents'] }}, Instances: {{ label['Label']['Instances'] }}</td>
-
-    </tr>
-  {% endfor %}
-
-
-  </tbody>
-</table>
-
-
-
-
-        </div>
-      </div>
-          {% endif %}
-
-
-
-
-
-
-
   {% if output is defined %}
 
-  <div class="p-5 mb-4 bg-light rounded-3">
+  {% if output['lang_score'] < 0.99 %}
+    <p></p>
+    {% else %}
+
+          <div class="p-5 mb-4 bg-light rounded-3">
       <div class="container-fluid py-5">
-          <h4 class="display-6">Rekognition Results: Person Tracking </h4>
-          <p>Sorry, for the improper formatting of output!</p>
+          <h4 class="display-6">Grammar Syntax Analysis</h4>
 
 
-          <table class="table  table-sm">
+
+        <table class="table  table-sm">
   <thead class="thead-dark">
     <tr>
-        <th scope="col">Timestamp</th>
-      <th scope="col">Person Index</th>
+      <th scope="col">Begin Offset</th>
+      <th scope="col">End Offset</th>
+              <th scope="col">Text</th>
+                      <th scope="col">Type</th>
+        <th scope="col">Part of Speech - Tag</th>
+        <th scope="col">Part of Speech - Score</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for items in output['detect_syntax']['SyntaxTokens'] %}
+    <tr>
+      <td>{{ items['BeginOffset'] }}</td>
+          <td>{{ items['EndOffset'] }}</td>
+                  <td>{{ items['Text'] }}</td>
+              <td>{{ items['type'] }}</td>
+      <td>{{ items['PartOfSpeech']['Tag'] }}</td>
+      <th>{{ items['PartOfSpeech']['Score'] }}</th>
 
-              <th scope="col">Other Details</th>
+    </tr>
+  {% endfor %}
+
+
+  </tbody>
+</table>
+        </div>
+      </div>
+
+
+
+
+   {% endif %}
+
+      {% endif %}
+
+
+    {% if output is defined %}
+
+  {% if output['lang_score'] < 0.99 %}
+    <p></p>
+    {% else %}
+
+          <div class="p-5 mb-4 bg-light rounded-3">
+      <div class="container-fluid py-5">
+          <h4 class="display-6">Sentiment Analysis</h4>
+
+
+
+        <table class="table  table-sm">
+  <thead class="thead-dark">
+    <tr>
+       <th scope="col">Parameter</th>
+      <th scope="col">Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Positive Sentiment Score</th>
+      <td>{{ output['detect_sentiment']['SentimentScore']['Positive'] }}</td>
+    </tr>
+   <tr>
+      <th scope="row">Negative Sentiment Score</th>
+      <td>{{ output['detect_sentiment']['SentimentScore']['Negative'] }}</td>
+    </tr>
+  <tr>
+      <th scope="row">Neutral Sentiment Score</th>
+      <td>{{ output['detect_sentiment']['SentimentScore']['Neutral'] }}</td>
+    </tr>
+   <tr>
+      <th scope="row">Mixed Sentiment Score</th>
+      <td>{{ output['detect_sentiment']['SentimentScore']['Mixed'] }}</td>
+    </tr>
+
+
+  </tbody>
+</table>
+        </div>
+      </div>
+
+
+
+
+   {% endif %}
+
+      {% endif %}
+
+
+   {% if output is defined %}
+
+  {% if output['lang_score'] < 0.99 %}
+    <p></p>
+    {% else %}
+
+          <div class="p-5 mb-4 bg-light rounded-3">
+      <div class="container-fluid py-5">
+          <h4 class="display-6">Grammar Key Phrases Analysis</h4>
+
+
+
+        <table class="table  table-sm">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Begin Offset</th>
+      <th scope="col">End Offset</th>
+              <th scope="col">Text</th>
+                      <th scope="col">Score</th>
 
     </tr>
   </thead>
   <tbody>
-  {% for person in output['video_person_tracking_job_response']['Persons'] %}
+  {% for items in output['detect_key_phrases']['KeyPhrases'] %}
     <tr>
-     <td>{{ person['Timestamp'] }}</td>
-     <td>{{ person['Person']['Index'] }}</td>
-     <td>{{ person['Person'] }}</td>
+      <td>{{ items['BeginOffset'] }}</td>
+          <td>{{ items['EndOffset'] }}</td>
+                  <td>{{ items['Text'] }}</td>
+              <td>{{ items['Score'] }}</td>
 
 
     </tr>
@@ -289,13 +415,206 @@
 
   </tbody>
 </table>
-
-
-
-
         </div>
       </div>
-          {% endif %}
+
+
+
+
+   {% endif %}
+
+      {% endif %}
+
+   {% if output is defined %}
+
+  {% if output['lang_score'] < 0.99 %}
+    <p></p>
+    {% else %}
+
+          <div class="p-5 mb-4 bg-light rounded-3">
+      <div class="container-fluid py-5">
+          <h4 class="display-6">Grammar Entity Analysis</h4>
+
+
+
+        <table class="table  table-sm">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Begin Offset</th>
+      <th scope="col">End Offset</th>
+              <th scope="col">Text</th>
+                      <th scope="col">Type</th>
+                      <th scope="col">Score</th>
+
+    </tr>
+  </thead>
+  <tbody>
+  {% for items in output['detect_entities']['Entities'] %}
+    <tr>
+      <td>{{ items['BeginOffset'] }}</td>
+          <td>{{ items['EndOffset'] }}</td>
+                  <td>{{ items['Text'] }}</td>
+                  <td>{{ items['Type'] }}</td>
+              <td>{{ items['Score'] }}</td>
+
+
+    </tr>
+  {% endfor %}
+
+
+  </tbody>
+</table>
+        </div>
+      </div>
+
+
+
+
+   {% endif %}
+
+      {% endif %}
+
+   {% if output is defined %}
+
+
+   {% if output['lang_score'] < 0.99 %}
+    <p></p>
+    {% else %}
+
+          <div class="p-5 mb-4 bg-light rounded-3">
+      <div class="container-fluid py-5">
+          <h4 class="display-6">Grammar Analysis</h4>
+
+
+
+        <table class="table  table-sm">
+  <thead class="thead-dark">
+    <tr>
+                      <th scope="col">Type</th>
+                              <th scope="col">Message</th>
+      <th scope="col">Rule</th>
+      <th scope="col">Category</th>
+                      <th scope="col">Replacements</th>
+
+                              <th scope="col">Corrections</th>
+
+
+    </tr>
+  </thead>
+  <tbody>
+  {% for items in output['grammarbot_results_list'] %}
+    <tr>
+                      <td>{{ items['type'] }}</td>
+                          <td>{{ items['message'] }}</td>
+
+      <td>{{ items['rule'] }}</td>
+          <td>{{ items['category'] }}</td>
+              <td>{{ items['replacements'] }}</td>
+
+              <td>{{ items['corrections'] }}</td>
+
+
+    </tr>
+  {% endfor %}
+
+
+  </tbody>
+</table>
+        </div>
+      </div>
+
+
+
+
+   {% endif %}
+
+      {% endif %}
+
+{#      {% if output is defined %}#}
+{##}
+{#  <div class="p-5 mb-4 bg-light rounded-3">#}
+{#      <div class="container-fluid py-5">#}
+{#          <h4 class="display-6">Rekognition Results: Labels </h4>#}
+{#          <p>List of Labels Detected:  {{ output['video_label_detection_job_label_list'] }}</p>#}
+{##}
+{##}
+{#          <table class="table  table-sm">#}
+{#  <thead class="thead-dark">#}
+{#    <tr>#}
+{#        <th scope="col">Timestamp</th>#}
+{#      <th scope="col">Label Name</th>#}
+{##}
+{#              <th scope="col">Confidence</th>#}
+{#              <th scope="col">Other Details</th>#}
+{#    </tr>#}
+{#  </thead>#}
+{#  <tbody>#}
+{#  {% for label in output['video_label_detection_job_response']['Labels'] %}#}
+{#    <tr>#}
+{#      <td>{{ label['Timestamp'] }}</td>#}
+{#    <td>{{ label['Label']['Name'] }}</td>#}
+{#        <td>{{ label['Label']['Confidence'] }}</td>#}
+{#    <td>Parents: {{ label['Label']['Parents'] }}, Instances: {{ label['Label']['Instances'] }}</td>#}
+{##}
+{#    </tr>#}
+{#  {% endfor %}#}
+{##}
+{##}
+{#  </tbody>#}
+{#</table>#}
+{##}
+{##}
+{##}
+{##}
+{#        </div>#}
+{#      </div>#}
+{#          {% endif %}#}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{#  {% if output is defined %}#}
+{##}
+{#  <div class="p-5 mb-4 bg-light rounded-3">#}
+{#      <div class="container-fluid py-5">#}
+{#          <h4 class="display-6">Rekognition Results: Person Tracking </h4>#}
+{#          <p>Sorry, for the improper formatting of output!</p>#}
+{##}
+{##}
+{#          <table class="table  table-sm">#}
+{#  <thead class="thead-dark">#}
+{#    <tr>#}
+{#        <th scope="col">Timestamp</th>#}
+{#      <th scope="col">Person Index</th>#}
+{##}
+{#              <th scope="col">Other Details</th>#}
+{##}
+{#    </tr>#}
+{#  </thead>#}
+{#  <tbody>#}
+{#  {% for person in output['video_person_tracking_job_response']['Persons'] %}#}
+{#    <tr>#}
+{#     <td>{{ person['Timestamp'] }}</td>#}
+{#     <td>{{ person['Person']['Index'] }}</td>#}
+{#     <td>{{ person['Person'] }}</td>#}
+{##}
+{##}
+{#    </tr>#}
+{#  {% endfor %}#}
+{##}
+{##}
+{#  </tbody>#}
+{#</table>#}
+{##}
+{##}
+{##}
+{##}
+{#        </div>#}
+{#      </div>#}
+{#          {% endif %}#}
 
 </div>
 
